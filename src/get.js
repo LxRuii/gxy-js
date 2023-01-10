@@ -126,7 +126,7 @@ function getRb() {
 function getServers() {
   ajax.ajax({
     method: 'get',
-    url: "https://sctapi.ftqq.com/" + key + ".send?title=" + user.obj.title + "&desp=" + user.obj.content
+    url: "https://sctapi.ftqq.com/" + key + ".send?title=" + '签到成功！！每日一诗--今日诗：' +user.obj.title + "&desp=" + user.obj.content
   })
 }
 
