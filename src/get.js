@@ -77,6 +77,7 @@ function getSign() {
       token = res.data.token
       userId = res.data.userId
       getdata()
+      console.log(jrtime + user.obj.title + user.obj.content)
       getMd5()
       getRb()
     }
