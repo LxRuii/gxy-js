@@ -43,7 +43,7 @@ function getdata() {
   var date = new Date();
   var y = date.getFullYear()
   var d = date.getDate();
-  d <= 9 ? d = '0' + d : d = d + 0;
+  d <= 9 ? d = '0' + d : d = d + 1;
   var m = date.getMonth() + 1;
   m <= 9 ? m = '0' + m : m = m + 0;
   jrtime = `${y}-${m}-${d} 00:00:00 00:00:00` // 系统返回当前时间
