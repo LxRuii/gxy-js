@@ -6,7 +6,7 @@ name: "日报"
 on:
   workflow_dispatch:
   schedule:
-    - cron: "00 23 * * *"
+    - cron: "16 00 * * *"
 
 jobs:
   build:
