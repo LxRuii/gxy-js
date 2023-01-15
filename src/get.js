@@ -9,7 +9,7 @@ var token
 var userId
 var sign
 var jrtime
-var key = 'SCT183817TaSyXAD2OvKBLp1W4YIS3rcFn'
+var key = user.obj.serverJ
 
 
 // 网络请求
@@ -49,7 +49,6 @@ function getdata() {
   jrtime = `${y}-${m}-${d} 00:00:00 00:00:00` // 系统返回当前时间
 }
 
-
 // 登录
 function getSign() {
 
@@ -77,11 +76,38 @@ function getSign() {
       token = res.data.token
       userId = res.data.userId
       getdata()
-      console.log(jrtime + user.obj.title + user.obj.content)
       getMd5()
       getRb()
     }
-  });
+  }).catch((err) => {
+    console.log('超时了');
+    ajax.ajax({
+      url: "https://api.moguding.net:9000/session/user/v3/login",
+      methods: "POST",
+      header: {
+        'content-type': 'application/json;charset=UTF-8',
+      },
+      data: {
+        "version": "5.3.0",
+        "password": password,
+        "loginType": "android",
+        "device": "android",
+        "t": t,
+        "phone": phone,
+        "uuid": "",
+      },
+    }).then((res) => {
+      if (res.code == 200) {
+        console.log('登录成功');
+        token = res.data.token
+        userId = res.data.userId
+        getdata()
+        getMd5()
+        getRb()
+      }
+    })
+    console.log(err);
+  })
 }
 // getSign()
 
@@ -104,32 +130,67 @@ function getRb() {
     url: "https://api.moguding.net:9000/practice/paper/v4/save",
     methods: "POST",
     data: {
-      "content": user.obj.content,
+      "content": user.obj.content || 'abcdefghijklmnopqrstuvwxyz',
       "imageList": [],
       "planId": "f554902da5fb17f296d5f8fb3f8bc008",
       "reportTime": jrtime,
       "reportType": "day",
       "t": t,
-      "title": user.obj.title,
+      "title": user.obj.title || '日报',
     },
     headers: {
       "sign": sign,
       'authorization': token,
+      'accept': 'application/json, text/plain, */*',
+      "rolekey": 'student',
     }
   }).then((res) => {
     if (res.code == 200) {
       console.log('日报填写成功');
-      getServers();
+      getServers()
     }
+  }).catch((err) => {
+    ajax.ajax({
+      url: "https://api.moguding.net:9000/practice/paper/v4/save",
+      methods: "POST",
+      data: {
+        "content": user.obj.content || 'abcdefghijklmnopqrstuvwxyz',
+        "imageList": [],
+        "planId": "f554902da5fb17f296d5f8fb3f8bc008",
+        "reportTime": jrtime,
+        "reportType": "day",
+        "t": t,
+        "title": user.obj.title || '日报',
+      },
+      headers: {
+        "sign": sign,
+        'authorization': token,
+        'accept': 'application/json, text/plain, */*',
+        "rolekey": 'student',
+      }
+    }).then((res) => {
+      if (res.code == 200) {
+        console.log('日报填写成功');
+        getServers()
+      }
+    })
   });
 }
 
+// server酱推送
 function getServers() {
   ajax.ajax({
-    method: 'get',
-    url: "https://sctapi.ftqq.com/" + key + ".send?title=" + '签到成功！！每日一诗--今日诗：' +user.obj.title + "&desp=" + user.obj.content
+    url: "https://sctapi.ftqq.com/" + key + ".send?title=" + '日报填写成功！！内容：' + user.obj.title + "&desp=" + user.obj.content,
+    method: 'GET'
+  }).catch((err) => {
+    ajax.ajax({
+      url: "https://sctapi.ftqq.com/" + key + ".send?title=" + '日报填写成功！！内容：' + user.obj.title + "&desp=" + user.obj.content,
+      method: 'GET'
+    })
   })
 }
+
+
 
 var app = {
   getSign: getSign()
