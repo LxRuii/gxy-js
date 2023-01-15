@@ -13,5 +13,6 @@ module.exports.obj = {
   phone: '15170764528',
   password: 'Liao2041936638',
   title: text.dayTitle[numX],
+  serverJ: 'PDU18526TNp5KJn3hl6y9tg1avpcYFg3TPmYSv5uu',
   content: text.dayContent[numX],
 }
