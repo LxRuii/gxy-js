@@ -131,9 +131,8 @@ function getRb() {
 // server酱推送
 function getServers() {
   ajax.ajax({
-    url: "https://sctapi.ftqq.com/" + key + ".send?title=" + '日报填写成功！！内容：' + user.obj.title + "&desp=" + user.obj.content,
+    url: "https://sctapi.ftqq.com/" + user.obj.serverJ + ".send?title=" + '日报填写成功！！内容：' + user.obj.title + "&desp=" + user.obj.content,
     method: 'GET'
-  }).catch((err) => {
   })
 }
 
